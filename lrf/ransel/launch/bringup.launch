@@ -1,0 +1,20 @@
+<launch>
+
+<!--INITIALIZE RPLIDAR-->
+<include file="$(find rplidar_ros)/launch/rplidar_a1.launch" />
+
+<!--INITIALIZE Realsense-->
+ <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
+
+  <!-- TRANSFORM CONFIG-->
+  
+	<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0.0 0.0 0.0 0.0 0.0 0.0 map odom"/>
+  <!-- Publish static transform: camera_link to laser -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_to_laser" args="0.0 0.0 0.2 3.141592 0.0 0.0 camera_link laser"/>
+  <!-- Publish static transform: odom to camera_odom_frame -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_camera_odom_frame" args="0.0 0.0 0.0 0.0 0.0 0.0 odom camera_odom_frame"/>
+  <!-- Publish static transform: camera_link to base_link -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_to_base_link" args="-0.09 0.0 0.0 0.0 0.0 0.0 camera_link base_link"/>
+
+
+</launch>

@@ -1,0 +1,55 @@
+<launch>
+
+<!-- Initialize bringup -->
+<include file="$(find ransel)/launch/new_bringup.launch" />
+
+ <!-- Subscribe: /initialpose, /move_base_simple/goal -->
+  <!-- Publish: /initial_2d, /goal_2d --> 
+  <node pkg="ransel" type="rviz_click_to_2d" name="rviz_click_to_2d">
+  </node>
+
+  <!-- Map File -->
+  <arg name="map_file" default="$(find ransel)/maps/New_lab.yaml"/>
+
+  <!-- Get laser scan readings -->
+    <include file="$(find ransel)/launch/pctl.launch" />
+	
+  <!-- Map Server -->
+  <!-- Publish: /map, /map_metadata -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" />
+	
+  <!-- Add AMCL example for differential drive robots for Localization -->
+  <!-- Subscribe: /scan, /tf, /initialpose, /map -->
+  <!-- Publish: /amcl_pose, /particlecloud, /tf -->
+  <include file="$(find ransel)/launch/new_amcl.launch"/>
+	
+  <!-- Move Base Node -->
+  <!-- Subscribe: /move_base_simple/goal -->
+  <!-- Publish: /cmd_vel -->
+
+<arg name="cmd_vel_topic" default="/cmd_vel" />
+<arg name="odom_topic" default="/camera/odom/sample" />
+<arg name="move_forward_only" default="false"/>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" />
+    <rosparam file="$(find ransel)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ransel)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ransel)/param/local_costmap_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ransel)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find ransel)/param/global_costmap_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ransel)/param/base_local_planner_params.yaml" command="load" />
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+  </node>
+
+<!-- INITIALIZE ROSSERIAL PYTHON -->
+	<node name="serial_node" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value="/dev/ttyUSB0"/>
+		<param name="baud" value="57600"/>
+	</node>
+
+<!--INITIALIZE RVIZ-->
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find ransel)/rviz/isok.rviz" />  
+
+</launch>

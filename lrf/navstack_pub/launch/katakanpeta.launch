@@ -1,0 +1,41 @@
+<launch>
+
+<!--INITIALIZE YUJIN LIDAR-->
+<node pkg="yujin_yrl_v2_package" type="yrl_pub" name="yrl_pub" output="screen" >
+    <rosparam command="load" file="$(find yujin_yrl_v2_package)/config/params.yaml"/>
+  </node>
+
+<!--INITIALIZE Realsense-->
+ <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
+
+    <!-- TRANSFORM CONFIG-->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0.0 0.0 0.0 0.0 0.0 0.0 map odom"/>
+	<node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_link" args="0.0 0.0 0.0 0.0 0.0 0.0 odom base_link" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.0 0.0 0.0 0.0 0.0 base_link yrl_cloud_id" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_camera_odom_frame" args="0.0 0.0 0.0 0.0 0.0 0.0 base_link camera_odom_frame" />
+
+<!--INITIALIIZE OCTOMAP MAPPING-->
+<node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+		<param name="resolution" value="0.05" />
+		
+		<!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+		<param name="frame_id" type="string" value="yrl_cloud_id" />
+		
+		<!-- maximum range to integrate (speedup!) -->
+		<param name="sensor_model/max_range" value="5.0" />
+		
+		<!-- data source to integrate (PointCloud2) -->
+		<remap from="cloud_in" to="/yrl_pub/yrl_cloud" />
+		<!-- <remap from="cloud_in" to="/narrow_stereo/points_filtered2" /> -->
+	
+	</node>
+
+<!-- Get laser scan readings -->
+	<include file="$(find navstack_pub)/launch/pctl.launch" />
+
+<!-- Get laser scan readings -->
+	<!-- <include file="$(find navstack_pub)/launch/gmapping.launch" /> -->
+
+<!--INITIALIZE RVIZ-->
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find navstack_pub)/rviz/mapping.rviz" />
+</launch>

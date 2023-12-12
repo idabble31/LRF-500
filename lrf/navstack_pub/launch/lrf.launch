@@ -1,0 +1,40 @@
+<launch>
+
+<!-- LAUNCH REALSENSE T265 NODE-->
+  <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
+
+<!-- LAUNCH YUJIN LIDAR NODE-->
+<!--<node pkg="yujin_yrl_v2_package" type="yrl_pub" name="yrl_pub" output="screen" >
+    <rosparam command="load" file="$(find yujin_yrl_v2_package)/config/params.yaml"/>
+  </node>-->
+
+  <!-- TRANSFORM CONFIG-->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0.0 0.0 0.0 0.0 0.0 0.0 map odom"/>
+	<node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_link" args="0.0 0.0 0.0 0.0 0.0 0.0 odom base_link" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.0 0.0 0.0 0.0 0.0 base_link yrl_cloud_id" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_camera_odom_frame" args="0.0 0.0 0.0 0.0 0.0 0.0 base_link camera_odom_frame" />
+
+<!-- LAUNCH ROSSERIAL NODE -->
+<!-- <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+  <param name="port" value="/dev/ttyUSB0"/>
+  <param name="baud" value="57600"/>
+</node> -->
+
+<!-- Get laser scan readings -->
+	<include file="$(find navstack_pub)/launch/pctl.launch" />
+
+<!-- Launch the octomap_server node to load and visualize the OctoMap -->
+  <node name="octomap_server" pkg="octomap_server" type="octomap_server_node" respawn="false" output="screen">
+    <param name="frame_id" value="map"/>  
+  </node>
+
+<!-- LAUNCH MOVE_BASE -->
+  <include file="$(find navstack_pub)/launch/move_base.launch"/>
+
+<!-- LAUNCH AMCL 3D -->
+  <include file="$(find navstack_pub)/launch/amcl.launch"/>
+
+<!-- LAUNCH RVIZ
+<node name="rviz" pkg="rviz" type="rviz"/> -->
+</launch>
+

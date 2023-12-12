@@ -1,0 +1,47 @@
+<launch>
+    <!-- INITIALIZE BRINGUP -->
+    <include file="$(find ransel)/launch/bringup.launch" />
+
+    <!-- INITIALIZE TELEOP TWIST JOY -->
+    <!-- <include file="$(find teleop_twist_joy)/launch/teleop.launch" /> -->
+
+    <!-- INITIALIZE TELEOP TWIST KEYBOARD-->
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen">
+    </node>
+
+
+	<!-- INITIALIZE ROSSERIAL PYTHON -->
+	<node name="serial_node" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value="/dev/ttyUSB0"/>
+		<param name="baud" value="57600"/>
+	</node>
+	
+	
+    <!-- Start GMapping Node -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <param name="base_frame" value="base_link"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="map_frame" value="map"/>
+    <param name="map_update_interval" value="5.0"/> <!-- Map update interval in seconds -->
+    <param name="maxUrange" value="10.0"/> <!-- Maximum range of the laser sensor -->
+    <param name="maxRange" value="12.0"/> <!-- Maximum range of the laser sensor -->
+    <param name="sigma" value="0.05"/> <!-- Standard deviation for the laser sensor -->
+    <param name="kernelSize" value="1"/> <!-- Size of the kernel for the laser sensor -->
+    <param name="lstep" value="0.05"/> <!-- Linear step size for the particle filter -->
+    <param name="astep" value="0.05"/> <!-- Angular step size for the particle filter -->
+    <param name="iterations" value="5"/> <!-- Number of iterations for the particle filter -->
+    <param name="lsigma" value="0.075"/> <!-- Linear standard deviation for the particle filter -->
+    <param name="asigma" value="0.075"/> <!-- Angular standard deviation for the particle filter -->
+    <param name="particles" value="100"/> <!-- Number of particles for the particle filter -->
+    <param name="xmin" value="-10.0"/> <!-- Minimum X-coordinate of the map -->
+    <param name="ymin" value="-10.0"/> <!-- Minimum Y-coordinate of the map -->
+    <param name="xmax" value="10.0"/> <!-- Maximum X-coordinate of the map -->
+    <param name="ymax" value="10.0"/> <!-- Maximum Y-coordinate of the map -->
+    <param name="delta" value="0.05"/> <!-- Resolution of the map -->
+  </node>
+
+
+
+    <!--INITIALIZE RVIZ-->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ransel)/rviz/mapping.rviz" />
+</launch>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+  <param name="use_sim_time" value="true"/>
+
+  <!-- Visualization -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find navstack_pub)/rviz/katakanpeta.rviz"/>
+
+  <include file="$(find navstack_pub)/launch/amcl3d.launch">
+    <arg name="map_name_path"   value="$(find navstack_pub)/maps/petabaru.bt"/>
+    <arg name="init_x"          value="2.62246605422"/>
+    <arg name="init_y"          value="1.79965136483"/>
+    <arg name="init_z"          value="1.01354973057"/>
+    <arg name="init_a"          value="-0.043"/>
+    <arg name="num_particles"   value="600"/>
+    <arg name="alpha"           value="0.5"/>
+    <arg name="take_off_height" value="0.5"/>
+  </include>
+
+</launch>

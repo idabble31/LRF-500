@@ -1,0 +1,57 @@
+<launch>
+
+  <!-- Initialize bringup -->
+  <include file="$(find ransel)/launch/bringup.launch" />
+
+  <!-- Subscribe: /initialpose, /move_base_simple/goal -->
+  <!-- Publish: /initial_2d, /goal_2d -->
+  <node pkg="ransel" type="rviz_click_to_2d" name="rviz_click_to_2d">
+  </node>
+
+  <!-- Map File -->
+  <arg name="map_file" default="$(find ransel)/maps/lab_smart3.yaml"/>
+
+  <!-- Map Server -->
+  <!-- Publish: /map, /map_metadata -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- Add AMCL example for differential drive robots for Localization -->
+  <!-- Subscribe: /scan, /tf, /initialpose, /map -->
+  <!-- Publish: /amcl_pose, /particlecloud, /tf -->
+  <!-- Add AMCL 3D -->
+  <include file="$(find ransel)/launch/new_amcl.launch"/>
+
+  <!-- Move Base Node -->
+  <!-- Subscribe: /move_base_simple/goal -->
+  <!-- Publish: /cmd_vel -->
+  <!-- Arguments -->
+  <arg name="cmd_vel_topic" default="/cmd_vel" />
+  <arg name="odom_topic" default="/camera/odom/sample" />
+  <arg name="move_forward_only" default="true"/>
+
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+   <!--<param name="base_global_planner" value="dsl_planner/DStarLiteROS"/>-->
+    <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS"/> 
+    <rosparam file="$(find ransel)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ransel)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ransel)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ransel)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ransel)/config/move_base_params.yaml" command="load" />
+    <rosparam file="$(find ransel)/config/dwa_local_planner_params.yaml" command="load" />
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    <param name="DWAPlannerROS/max_vel_x" value="0.5" if="$(arg move_forward_only)" />
+  </node>
+
+  <!-- INITIALIZE ROSSERIAL PYTHON -->
+  <node name="serial_node" pkg="rosserial_python" type="serial_node.py">
+    <param name="port" value="/dev/ttyUSB0"/>
+    <param name="baud" value="57600"/>
+  </node>
+
+  <!-- INITIALIZE RVIZ -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ransel)/rviz/isok.rviz" />
+
+</launch>
+

@@ -1,0 +1,30 @@
+obstacle_range: 0.5
+raytrace_range: 0.5
+footprint: [[-0.14, -0.14], [-0.14, 0.14], [0.14, 0.14], [0.14, -0.14]]
+map_topic: /projected_map # Adapt this to your octomap topic
+subscribe_to_updates: true
+
+robot_base_frame: base_link
+update_frequency: 30.0
+publish_frequency: 30.0
+rolling_window: false
+
+plugins:
+  - {name: static_layer, type: "costmap_2d::StaticLayer"}
+  - {name: obstacle_layer, type: "costmap_2d::VoxelLayer"}  # Using VoxelLayer for 3D data
+  - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+
+static_layer:
+  map_topic: /projected_map  # Adapt this to your octomap topic
+  subscribe_to_updates: false
+
+obstacle_layer:
+  observation_sources: Yujin_lidar3d  # Change this to your 3D LiDAR sensor source name
+  3d_lidar_sensor:
+    data_type: PointCloud2  # Use PointCloud2 for 3D data
+    topic: /yrl_pub/yrl_cloud  # Change this to your LiDAR PointCloud2 topic
+    marking: true
+    clearing: true
+
+inflation_layer:
+  inflation_radius: 0.2

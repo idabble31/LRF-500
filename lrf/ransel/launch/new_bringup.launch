@@ -1,0 +1,21 @@
+<launch>
+
+<!--INITIALIZE YUJIN LIDAR-->
+<node pkg="yujin_yrl_v2_package" type="yrl_pub" name="yrl_pub" output="screen" >
+    <rosparam command="load" file="$(find yujin_yrl_v2_package)/config/params.yaml"/>
+  </node>
+
+<!--INITIALIZE Realsense-->
+ <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
+
+
+<!-- Transform Config -->
+    <node pkg="tf" type="static_transform_publisher" name="camera_link_to_laser" args="0.0 0.0 0.0 0.0 0.0 0.0 camera_link yrl_cloud_id 100" output="screen"/>
+    <node pkg="tf" type="static_transform_publisher" name="odom_to_camera_odom" args="0.0 0.0 0.0 0.0 0.0 0.0 odom camera_odom_frame 100" output="screen"/>
+    <node pkg="tf" type="static_transform_publisher" name="camera_link_to_base_link" args="-0.09 0.0 0.0 0.0 0.0 0.0 camera_link base_link 100" output="screen"/>
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0.0 0.0 0.0 0.0 0.0 0.0 map odom 100" output="screen"/>
+    
+    
+    
+</launch>
+

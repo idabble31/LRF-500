@@ -1,0 +1,33 @@
+<launch>
+  <!-- Launch the robot model -->
+  <!-- <arg name="robot_description" />
+  <param name="robot_description" command="$(arg robot_description)" /> -->
+
+  <!-- Launch the laser scanner -->
+  <!-- <include file="$(find your_package_name)/launch/3d_lidar.launch" /> -->
+
+  <!-- Launch AMCL node -->
+  <node name="amcl3d" pkg="amcl" type="amcl" output="screen">
+    <!-- Use the map_server node to load the map -->
+    <param name="use_map_topic" value="true"/>
+    <param name="map_topic" value="/octomap_binary"/>
+    
+    <!-- Initial pose estimate -->
+    <param name="initial_pose_x" value="0.0"/>
+    <param name="initial_pose_y" value="0.0"/>
+    <param name="initial_pose_a" value="0.0"/>
+
+    <!-- Update frequency -->
+    <param name="update_min_d" value="0.2"/>
+    <param name="update_min_a" value="0.2"/>
+
+    <!-- Parameters related to your 3D LiDAR sensor -->
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame_id" value="base_link"/>
+    <param name="global_frame_id" value="map"/>
+    <param name="fixed_frame_id" value="map"/>
+    <param name="laser_max_range" value="15.0"/> <!-- Maximum range of your LiDAR -->
+    <param name="laser_z_min_value" value="-0.10"/> <!-- Minimum z value of points to consider -->
+    <param name="laser_z_max_value" value="2.0"/> <!-- Maximum z value of points to consider -->
+  </node>
+</launch>

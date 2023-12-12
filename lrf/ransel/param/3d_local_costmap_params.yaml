@@ -1,0 +1,23 @@
+local_costmap:
+  global_frame: odom
+  robot_base_frame: base_link
+  update_frequency: 30.0
+  publish_frequency: 30.0
+  transform_tolerance: 0.2
+  static_map: false  # Set to false since we're using octomap_server
+  rolling_window: true
+  resolution: 0.1
+  inflation_radius: 0.1
+  width: 1.0
+  height: 1.0
+
+  plugins:
+    - {name: obstacle_layer, type: "costmap_2d::VoxelLayer"}  # Use VoxelLayer for 3D data
+
+  obstacle_layer:
+    observation_sources: Yujin_lidar3d  # Change this to your 3D LiDAR sensor source name
+    3d_lidar_sensor:
+      data_type: PointCloud2  # Use PointCloud2 for 3D data
+      topic: /yrl_pub/yrl_cloud  # Change this to your LiDAR PointCloud2 topic
+      marking: true
+      clearing: true
