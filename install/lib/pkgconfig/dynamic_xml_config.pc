@@ -1,0 +1,8 @@
+prefix=/home/robot/lrf_ws/install
+
+Name: dynamic_xml_config
+Description: Description of dynamic_xml_config
+Version: 0.2.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

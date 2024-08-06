@@ -1,0 +1,8 @@
+prefix=/home/robot/lrf_ws/install
+
+Name: dynamic_rviz_config
+Description: Description of dynamic_rviz_config
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: urdf xacro

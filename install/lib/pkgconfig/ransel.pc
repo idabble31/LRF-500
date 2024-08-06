@@ -1,0 +1,8 @@
+prefix=/home/robot/lrf_ws/install
+
+Name: ransel
+Description: Description of ransel
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

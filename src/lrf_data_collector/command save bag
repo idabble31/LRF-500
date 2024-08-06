@@ -1,0 +1,1 @@
+rosbag record -O ~/lrf_ws/src/lrf_data_collector/src/data/realworld_data/static/bag/a_star_3.bag /camera/odom/sample /move_base/GraphPlanner/plan

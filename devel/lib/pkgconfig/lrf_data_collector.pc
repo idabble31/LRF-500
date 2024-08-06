@@ -1,0 +1,8 @@
+prefix=/home/robot/lrf_ws/devel
+
+Name: lrf_data_collector
+Description: Description of lrf_data_collector
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

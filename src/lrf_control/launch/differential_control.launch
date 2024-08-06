@@ -1,0 +1,12 @@
+<launch>
+
+<!--INITIALIZE DIFFERENTIAL MOTOR CONTROL NODE-->
+<node name="differential_controller" pkg="lrf_control" type="diff_drive_controller.py" />
+
+<!-- INITIALIZE ROSSERIAL PYTHON -->
+	<node name="serial_node" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value="/dev/ttyUSB0"/>
+		<param name="baud" value="57600"/>
+	</node>
+
+</launch>

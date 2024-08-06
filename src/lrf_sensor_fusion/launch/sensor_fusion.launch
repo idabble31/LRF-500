@@ -1,0 +1,4 @@
+<launch>
+  <rosparam command="load" file="$(find lrf_sensor_fusion)/config/ekf_no_scan.yaml" />
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" output="screen" />
+</launch>

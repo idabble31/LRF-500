@@ -1,0 +1,8 @@
+prefix=/home/robot/lrf_ws/devel
+
+Name: lrf_sensor_fusion
+Description: Description of lrf_sensor_fusion
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

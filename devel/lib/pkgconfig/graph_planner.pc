@@ -1,0 +1,8 @@
+prefix=/home/robot/lrf_ws/devel
+
+Name: graph_planner
+Description: Description of graph_planner
+Version: 0.0.0
+Cflags: -I/home/robot/lrf_ws/src/ros_motion_planning/src/core/global_planner/graph_planner/include
+Libs: -L${prefix}/lib 
+Requires: global_planner voronoi_layer utils curve_generation
