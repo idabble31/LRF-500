@@ -1,0 +1,27 @@
+[submodule "src/eband_local_planner"]
+    path = src/eband_local_planner
+    url = https://github.com/idabble31/LRF-500/tree/master/src/eband_local_planner
+
+[submodule "src/lrf_control"]
+    path = src/lrf_control
+    url = https://github.com/idabble31/LRF-500/tree/master/src/lrf_control
+
+[submodule "src/als_ros"]
+    path = src/als_ros
+    url = https://github.com/idabble31/LRF-500/tree/master/src/als_ros
+
+[submodule "src/ransel"]
+    path = src/ransel
+    url = https://github.com/idabble31/LRF-500/tree/master/src/ransel
+
+[submodule "src/ros_motion_planning"]
+    path = src/ros_motion_planning
+    url = https://github.com/idabble31/LRF-500/tree/master/src/ros_motion_planning
+
+[submodule "src/realsense-ros"]
+    path = src/realsense-ros
+    url = https://github.com/idabble31/LRF-500/tree/master/src/realsense-ros
+
+[submodule "src/rplidar_ros"]
+    path = src/rplidar_ros
+    url = https://github.com/idabble31/LRF-500/tree/master/src/rplidar_ros
