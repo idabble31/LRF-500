@@ -1,7 +1,3 @@
-Sure! Here's a template for a README file for your logistic robot repository. You can customize it as per your project details.
-
----
-
 # Logistic Robot Fleet (LRF-500)
 
 ## Overview
